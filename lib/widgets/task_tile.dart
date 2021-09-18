@@ -1,17 +1,30 @@
+// ignore_for_file: use_key_in_widget_constructors, prefer_const_constructors, prefer_const_constructors_in_immutables
+
 import 'package:flutter/material.dart';
 
 class TaskTile extends StatelessWidget {
-  const TaskTile({
-    Key? key,
-  }) : super(key: key);
+  final bool isChecked;
+  final String taskTitle;
+  final Function(bool?) checkCallback;
+
+  TaskTile(
+      {required this.isChecked,
+      required this.taskTitle,
+      required this.checkCallback});
 
   @override
   Widget build(BuildContext context) {
     return ListTile(
-      title: const Text('This is Task'),
+      title: Text(
+        taskTitle,
+        style: TextStyle(
+          decoration: isChecked ? TextDecoration.lineThrough : null,
+        ),
+      ),
       trailing: Checkbox(
-        value: false,
-        onChanged: (bool? value) {},
+        activeColor: Colors.lightBlueAccent,
+        value: isChecked,
+        onChanged: checkCallback,
       ),
     );
   }

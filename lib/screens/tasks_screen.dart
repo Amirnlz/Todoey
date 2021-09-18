@@ -1,27 +1,41 @@
+// ignore_for_file: use_key_in_widget_constructors, prefer_const_constructors, prefer_const_literals_to_create_immutables
+
 import 'package:flutter/material.dart';
 import 'package:todoey_flutter/widgets/tasks_list.dart';
+import 'add_task_screen.dart';
+import 'package:todoey_flutter/models/task_data.dart';
+import 'package:provider/provider.dart';
 
 class TasksScreen extends StatelessWidget {
-  const TasksScreen({Key? key}) : super(key: key);
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.lightBlueAccent,
       floatingActionButton: FloatingActionButton(
         backgroundColor: Colors.lightBlueAccent,
-        onPressed: () {},
-        child: const Icon(Icons.add),
+        onPressed: () {
+          showModalBottomSheet(
+            context: context,
+            builder: (context) => AddTaskScreen(
+              addTaskCallback: (newTaskTitle) {
+                // setState(() {
+                //   tasks.add(Task(description: newTaskTitle));
+                // });
+                Navigator.pop(context);
+              },
+            ),
+          );
+        },
+        child: Icon(Icons.add),
       ),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Container(
-            padding:
-                const EdgeInsets.only(left: 30, top: 60, right: 30, bottom: 30),
+            padding: EdgeInsets.only(left: 30, top: 60, right: 30, bottom: 30),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
-              children: const [
+              children: [
                 CircleAvatar(
                   child: Icon(
                     Icons.list,
@@ -42,7 +56,7 @@ class TasksScreen extends StatelessWidget {
                       color: Colors.white),
                 ),
                 Text(
-                  '12 Tasks',
+                  '${Provider.of<TaskData>(context).taskCount} Tasks',
                   style: TextStyle(
                     fontSize: 18,
                     color: Colors.white,
@@ -53,14 +67,14 @@ class TasksScreen extends StatelessWidget {
           ),
           Expanded(
             child: Container(
-              decoration: const BoxDecoration(
+              decoration: BoxDecoration(
                 color: Colors.white,
                 borderRadius: BorderRadius.only(
                   topRight: Radius.circular(20),
                   topLeft: Radius.circular(20),
                 ),
               ),
-              child: const TasksList(),
+              child: TasksList(),
             ),
           )
         ],
