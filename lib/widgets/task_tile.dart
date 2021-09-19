@@ -1,16 +1,18 @@
-// ignore_for_file: use_key_in_widget_constructors, prefer_const_constructors, prefer_const_constructors_in_immutables
-
 import 'package:flutter/material.dart';
 
 class TaskTile extends StatelessWidget {
   final bool isChecked;
   final String taskTitle;
   final Function(bool?) checkCallback;
+  final Function()? logPressCallback;
 
-  TaskTile(
-      {required this.isChecked,
+  const TaskTile(
+      {Key? key,
+      required this.isChecked,
       required this.taskTitle,
-      required this.checkCallback});
+      required this.checkCallback,
+      required this.logPressCallback})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -26,6 +28,7 @@ class TaskTile extends StatelessWidget {
         value: isChecked,
         onChanged: checkCallback,
       ),
+      onLongPress: logPressCallback,
     );
   }
 }

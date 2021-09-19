@@ -1,20 +1,24 @@
-// ignore_for_file: prefer_const_constructors, use_key_in_widget_constructors, prefer_const_constructors_in_immutables
-
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:todoey_flutter/models/task_data.dart';
 
-class AddTaskScreen extends StatelessWidget {
-  AddTaskScreen({required this.addTaskCallback});
+class AddTaskScreen extends StatefulWidget {
+  const AddTaskScreen({Key? key}) : super(key: key);
 
-  final Function(String) addTaskCallback;
+  @override
+  State<AddTaskScreen> createState() => _AddTaskScreenState();
+}
+
+class _AddTaskScreenState extends State<AddTaskScreen> {
+  late String taskTitle;
 
   @override
   Widget build(BuildContext context) {
-    String taskTitle;
     return Container(
-      color: Color(0xff757575),
+      color: const Color(0xff757575),
       child: Container(
-        padding: EdgeInsets.all(20),
-        decoration: BoxDecoration(
+        padding: const EdgeInsets.all(20),
+        decoration: const BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.only(
             topLeft: Radius.circular(20),
@@ -24,7 +28,7 @@ class AddTaskScreen extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            Text(
+            const Text(
               'Add Task',
               style: TextStyle(
                 color: Colors.lightBlueAccent,
@@ -37,11 +41,10 @@ class AddTaskScreen extends StatelessWidget {
               textAlign: TextAlign.center,
               onChanged: (value) {
                 taskTitle = value;
-                print(taskTitle);
               },
             ),
             TextButton(
-              child: Text(
+              child: const Text(
                 'Add',
                 style: TextStyle(
                   color: Colors.white,
@@ -53,7 +56,9 @@ class AddTaskScreen extends StatelessWidget {
                     MaterialStateProperty.all(Colors.lightBlueAccent),
               ),
               onPressed: () {
-                // addTaskCallback(taskTitle);
+                Provider.of<TaskData>(context, listen: false)
+                    .addTask(taskTitle);
+                Navigator.pop(context);
               },
             ),
           ],
