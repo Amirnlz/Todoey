@@ -16,6 +16,7 @@ class TasksList extends StatelessWidget {
             return TaskTile(
               isChecked: task.isDone,
               taskTitle: task.description,
+              taskPriority: task.taskPriority,
               checkCallback: (checkboxState) {
                 taskData.updateTask(task);
               },

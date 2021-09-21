@@ -3,6 +3,7 @@ import 'package:todoey_flutter/widgets/tasks_list.dart';
 import 'add_task_screen.dart';
 import 'package:todoey_flutter/models/task_data.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter_neumorphic/flutter_neumorphic.dart';
 
 class TasksScreen extends StatelessWidget {
   const TasksScreen({Key? key}) : super(key: key);
@@ -42,12 +43,15 @@ class TasksScreen extends StatelessWidget {
                 const SizedBox(
                   height: 10,
                 ),
-                const Text(
+                NeumorphicText(
                   'Todoey',
-                  style: TextStyle(
-                      fontSize: 50,
-                      fontWeight: FontWeight.w700,
-                      color: Colors.white),
+                  textStyle: NeumorphicTextStyle(
+                    fontSize: 50,
+                    fontWeight: FontWeight.w700,
+                  ),
+                  style: const NeumorphicStyle(
+                    color: Colors.white,
+                  ),
                 ),
                 Text(
                   '${Provider.of<TaskData>(context).taskCount} Tasks',

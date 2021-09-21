@@ -1,6 +1,9 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_neumorphic/flutter_neumorphic.dart';
 import 'package:provider/provider.dart';
 import 'package:todoey_flutter/models/task_data.dart';
+import 'package:todoey_flutter/constants.dart';
 
 class AddTaskScreen extends StatefulWidget {
   const AddTaskScreen({Key? key}) : super(key: key);
@@ -11,6 +14,19 @@ class AddTaskScreen extends StatefulWidget {
 
 class _AddTaskScreenState extends State<AddTaskScreen> {
   late String taskTitle;
+  String taskPriority = 'Medium';
+
+  List<DropdownMenuItem<String>> getDropDownItems() {
+    List<DropdownMenuItem<String>> itemList = [];
+    for (String priority in priorityList) {
+      var newItem = DropdownMenuItem(
+        child: Text(priority),
+        value: priority,
+      );
+      itemList.add(newItem);
+    }
+    return itemList;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -36,28 +52,53 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
               ),
               textAlign: TextAlign.center,
             ),
-            TextField(
-              autofocus: true,
-              textAlign: TextAlign.center,
-              onChanged: (value) {
-                taskTitle = value;
-              },
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Expanded(
+                  child: Padding(
+                    padding: const EdgeInsets.all(10.0),
+                    child: TextField(
+                      autofocus: true,
+                      textAlign: TextAlign.center,
+                      onChanged: (value) {
+                        taskTitle = value;
+                      },
+                    ),
+                  ),
+                ),
+                Container(
+                  // color: Colors.red,
+                  decoration: kDropDownDecoration,
+                  child: DropdownButton<String>(
+                    items: getDropDownItems(),
+                    value: taskPriority,
+                    onChanged: (value) {
+                      setState(() {
+                        taskPriority = value!;
+                      });
+                    },
+                    borderRadius: const BorderRadius.all(Radius.circular(12)),
+                    alignment: Alignment.center,
+                  ),
+                ),
+              ],
             ),
-            TextButton(
+            NeumorphicButton(
+              margin: const EdgeInsets.all(12),
+              padding: const EdgeInsets.all(12.0),
+              style: kNeumorphicButtonStyle,
               child: const Text(
                 'Add',
+                textAlign: TextAlign.center,
                 style: TextStyle(
                   color: Colors.white,
                   fontSize: 18,
                 ),
               ),
-              style: ButtonStyle(
-                backgroundColor:
-                    MaterialStateProperty.all(Colors.lightBlueAccent),
-              ),
               onPressed: () {
                 Provider.of<TaskData>(context, listen: false)
-                    .addTask(taskTitle);
+                    .addTask(taskTitle, taskPriority);
                 Navigator.pop(context);
               },
             ),

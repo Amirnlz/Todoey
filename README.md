@@ -22,8 +22,8 @@ A few resources to get you started if this is your first Flutter project:
 </table>
 
 ## To-do lists
-- [ ] Add priority to tasks
-- [ ] Sort task by not finished tasks
+- [x] Add priority to tasks
+- [ ] Sort task by not finished tasks and priority of the task
 - [ ] Add edit task
 - [ ] Add dark theme
 - [ ] Control tasks by swipe right or left
