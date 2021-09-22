@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:todoey_flutter/constants.dart';
 
 class TaskTile extends StatelessWidget {
   final bool isChecked;
   final String taskTitle;
-  final String taskPriority;
+  final Priority taskPriority;
   final Function(bool?) checkCallback;
   final Function()? logPressCallback;
 
@@ -17,13 +18,13 @@ class TaskTile extends StatelessWidget {
       : super(key: key);
 
   Color getPriorityColor() {
-    if (taskPriority == 'Important') {
+    if (taskPriority == Priority.important) {
       return Colors.red;
-    } else if (taskPriority == 'High') {
+    } else if (taskPriority == Priority.high) {
       return Colors.orange;
-    } else if (taskPriority == 'Medium') {
+    } else if (taskPriority == Priority.medium) {
       return Colors.blueGrey;
-    } else if (taskPriority == 'Low') {
+    } else if (taskPriority == Priority.low) {
       return Colors.green;
     } else {
       return Colors.purple;
@@ -45,7 +46,7 @@ class TaskTile extends StatelessWidget {
         onChanged: checkCallback,
       ),
       subtitle: Text(
-        taskPriority,
+        taskPriority.toShortString(),
         style: TextStyle(
           color: getPriorityColor(),
         ),

@@ -1,12 +1,14 @@
+import 'package:todoey_flutter/constants.dart';
+
 class Task {
   late final String description;
   bool isDone;
-  String taskPriority;
+  Priority taskPriority;
 
   Task({
     required this.description,
     this.isDone = false,
-    this.taskPriority = 'Medium',
+    this.taskPriority = Priority.medium,
   });
 
   void toggleDone() {

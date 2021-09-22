@@ -1,36 +1,29 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_neumorphic/flutter_neumorphic.dart';
 
-List<String> priorityList = [
-  'Important',
-  'High',
-  'Medium',
-  'Low',
-  'Optional',
+enum Priority {
+  important,
+  high,
+  medium,
+  low,
+  optional,
+}
+
+List<Priority> priorityList = [
+  Priority.important,
+  Priority.high,
+  Priority.medium,
+  Priority.low,
+  Priority.optional,
 ];
 
-List<Text> priorityList2 = const [
-  Text(
-    'Important',
-    style: TextStyle(color: Colors.red),
-  ),
-  Text(
-    'High',
-    style: TextStyle(color: Colors.orange),
-  ),
-  Text(
-    'Medium',
-    style: TextStyle(color: Colors.blueGrey),
-  ),
-  Text(
-    'Low',
-    style: TextStyle(color: Colors.green),
-  ),
-  Text(
-    'Optional',
-    style: TextStyle(color: Colors.purple),
-  ),
-];
+extension ParseToString on Priority {
+  String toShortString() {
+    return toString().split('.').last;
+  }
+
+  int comparePriority(Priority other) => index.compareTo(other.index);
+}
 
 final kDropDownDecoration = BoxDecoration(
   borderRadius: const BorderRadius.all(Radius.circular(12)),

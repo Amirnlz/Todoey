@@ -14,19 +14,7 @@ class AddTaskScreen extends StatefulWidget {
 
 class _AddTaskScreenState extends State<AddTaskScreen> {
   late String taskTitle;
-  String taskPriority = 'Medium';
-
-  List<DropdownMenuItem<String>> getDropDownItems() {
-    List<DropdownMenuItem<String>> itemList = [];
-    for (String priority in priorityList) {
-      var newItem = DropdownMenuItem(
-        child: Text(priority),
-        value: priority,
-      );
-      itemList.add(newItem);
-    }
-    return itemList;
-  }
+  Priority taskPriority = Priority.medium;
 
   @override
   Widget build(BuildContext context) {
@@ -70,8 +58,13 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
                 Container(
                   // color: Colors.red,
                   decoration: kDropDownDecoration,
-                  child: DropdownButton<String>(
-                    items: getDropDownItems(),
+                  child: DropdownButton<Priority>(
+                    items: Priority.values
+                        .map((priorities) => DropdownMenuItem(
+                              child: Text(priorities.toShortString()),
+                              value: priorities,
+                            ))
+                        .toList(),
                     value: taskPriority,
                     onChanged: (value) {
                       setState(() {
