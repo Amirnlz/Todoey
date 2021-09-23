@@ -36,6 +36,18 @@ class TaskData extends ChangeNotifier {
     notifyListeners();
   }
 
+  void deleteTaskByTitle(String taskTitle, Priority taskPriority) {
+    var task;
+    for (var element in _tasks) {
+      if (element.description == taskTitle &&
+          element.taskPriority == taskPriority) {
+        task = element;
+      }
+    }
+    _tasks.remove(task);
+    notifyListeners();
+  }
+
   void sortListByNotFinished() {
     for (int i = 0; i < _tasks.length; i++) {
       final task = _tasks[i];

@@ -5,16 +5,27 @@ import 'package:provider/provider.dart';
 import 'package:todoey_flutter/models/task_data.dart';
 import 'package:todoey_flutter/constants.dart';
 
-class AddTaskScreen extends StatefulWidget {
-  const AddTaskScreen({Key? key}) : super(key: key);
+class TaskManagement extends StatefulWidget {
+  final String? whichTask;
+
+  const TaskManagement({Key? key, this.whichTask}) : super(key: key);
 
   @override
-  State<AddTaskScreen> createState() => _AddTaskScreenState();
+  State<TaskManagement> createState() => _TaskManagementState();
 }
 
-class _AddTaskScreenState extends State<AddTaskScreen> {
+class _TaskManagementState extends State<TaskManagement> {
   late String taskTitle;
   Priority taskPriority = Priority.medium;
+
+  List<DropdownMenuItem<Priority>> get dropDownMenuItems {
+    return Priority.values
+        .map((priorities) => DropdownMenuItem(
+              child: Text(priorities.toShortString()),
+              value: priorities,
+            ))
+        .toList();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -32,9 +43,9 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            const Text(
-              'Add Task',
-              style: TextStyle(
+            Text(
+              widget.whichTask == null ? 'Add Task' : 'Edit Task',
+              style: const TextStyle(
                 color: Colors.lightBlueAccent,
                 fontSize: 30,
               ),
@@ -56,23 +67,20 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
                   ),
                 ),
                 Container(
-                  // color: Colors.red,
                   decoration: kDropDownDecoration,
-                  child: DropdownButton<Priority>(
-                    items: Priority.values
-                        .map((priorities) => DropdownMenuItem(
-                              child: Text(priorities.toShortString()),
-                              value: priorities,
-                            ))
-                        .toList(),
-                    value: taskPriority,
-                    onChanged: (value) {
-                      setState(() {
-                        taskPriority = value!;
-                      });
-                    },
-                    borderRadius: const BorderRadius.all(Radius.circular(12)),
-                    alignment: Alignment.center,
+                  child: Padding(
+                    padding: const EdgeInsets.all(4.0),
+                    child: DropdownButton<Priority>(
+                      items: dropDownMenuItems,
+                      value: taskPriority,
+                      borderRadius: const BorderRadius.all(Radius.circular(12)),
+                      alignment: Alignment.center,
+                      onChanged: (value) {
+                        setState(() {
+                          taskPriority = value!;
+                        });
+                      },
+                    ),
                   ),
                 ),
               ],
@@ -82,7 +90,7 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
               padding: const EdgeInsets.all(12.0),
               style: kNeumorphicButtonStyle,
               child: const Text(
-                'Add',
+                'Done',
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   color: Colors.white,

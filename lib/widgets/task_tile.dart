@@ -1,21 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:todoey_flutter/constants.dart';
+import 'package:todoey_flutter/screens/task_management.dart';
+import 'package:provider/provider.dart';
+import 'package:todoey_flutter/models/task_data.dart';
 
 class TaskTile extends StatelessWidget {
   final bool isChecked;
   final String taskTitle;
   final Priority taskPriority;
   final Function(bool?) checkCallback;
-  final Function()? logPressCallback;
 
-  const TaskTile(
-      {Key? key,
-      required this.isChecked,
-      required this.taskTitle,
-      required this.taskPriority,
-      required this.checkCallback,
-      required this.logPressCallback})
-      : super(key: key);
+  const TaskTile({
+    Key? key,
+    required this.isChecked,
+    required this.taskTitle,
+    required this.taskPriority,
+    required this.checkCallback,
+  }) : super(key: key);
 
   Color getPriorityColor() {
     if (taskPriority == Priority.important) {
@@ -40,10 +41,29 @@ class TaskTile extends StatelessWidget {
           decoration: isChecked ? TextDecoration.lineThrough : null,
         ),
       ),
-      trailing: Checkbox(
-        activeColor: Colors.lightBlueAccent,
-        value: isChecked,
-        onChanged: checkCallback,
+      trailing: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Checkbox(
+            activeColor: Colors.lightBlueAccent,
+            value: isChecked,
+            onChanged: checkCallback,
+          ),
+          GestureDetector(
+            child: const Icon(
+              Icons.edit,
+              color: Colors.grey,
+            ),
+            onTap: () {
+              Provider.of<TaskData>(context, listen: false)
+                  .deleteTaskByTitle(taskTitle, taskPriority);
+              showModalBottomSheet(
+                context: context,
+                builder: (context) => TaskManagement(whichTask: taskTitle),
+              );
+            },
+          ),
+        ],
       ),
       subtitle: Text(
         taskPriority.toShortString(),
@@ -51,7 +71,6 @@ class TaskTile extends StatelessWidget {
           color: getPriorityColor(),
         ),
       ),
-      onLongPress: logPressCallback,
     );
   }
 }
